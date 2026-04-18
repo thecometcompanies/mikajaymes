@@ -39,19 +39,33 @@ cd mikajaymes
 
 ---
 
-## Step 3: Authenticate with Shopify
+## Step 3: Create Your Free Shopify Partner Account
+
+You'll access the store as a **Collaborator** (free, no staff seat needed):
+
+1. Go to [partners.shopify.com](https://partners.shopify.com) and sign up (free)
+2. Once in the Partner dashboard, go to **Stores → Add store → Managed stores**
+3. Enter `mikajaymes.myshopify.com` and submit a collaborator request
+4. Michael will approve your request and grant you **Themes** permission
+5. Wait for the approval notification (you'll get an email)
+
+---
+
+## Step 4: Authenticate with Shopify CLI
+
+Once Michael approves your collaborator access:
 
 ```bash
 shopify auth login --store mikajaymes.myshopify.com
 ```
 
-This will open your browser. Log in with the **staff account credentials** Michael gave you.
+This will open your browser. Log in with your **Shopify Partner account** credentials.
 
-Your staff account only has access to theme development - you cannot affect the live store.
+Your collaborator account only has Themes permission - you cannot affect the live store, payments, or settings.
 
 ---
 
-## Step 4: Pull the Development Theme
+## Step 5: Pull the Development Theme
 
 ```bash
 shopify theme pull --development
@@ -61,7 +75,7 @@ This downloads a copy of the theme files to your local machine as a **developmen
 
 ---
 
-## Step 5: Start the Dev Server
+## Step 6: Start the Dev Server
 
 ```bash
 shopify theme dev --store mikajaymes.myshopify.com
@@ -80,7 +94,7 @@ The development theme is:
 
 ---
 
-## Step 6: Make Changes
+## Step 7: Make Changes
 
 Edit files in your local `mikajaymes/` directory. Changes appear instantly in your browser preview.
 
@@ -97,7 +111,7 @@ Edit files in your local `mikajaymes/` directory. Changes appear instantly in yo
 
 ---
 
-## Step 7: Save Your Work to GitHub
+## Step 8: Save Your Work to GitHub
 
 When you've made changes you're happy with:
 
@@ -127,7 +141,7 @@ git push origin main
 
 ---
 
-## Step 8: Submit for Review
+## Step 9: Submit for Review
 
 When you want Michael to review your work:
 
@@ -165,7 +179,7 @@ Michael will review and publish when ready.
 ## Troubleshooting
 
 ### "You don't have permission"
-Your staff account may not have the right permissions. Message Michael in Slack.
+Your collaborator request may not be approved yet, or you may need Themes permission. Message Michael in Slack.
 
 ### "Theme not found"
 Run `shopify theme list` to see available themes. Use `shopify theme dev` to create a new dev theme.

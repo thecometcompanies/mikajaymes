@@ -14,13 +14,18 @@ cd mikajaymes
 # 2. Install Shopify CLI (if not already installed)
 npm install -g @shopify/cli @shopify/theme
 
-# 3. Authenticate with the store
+# 3. Set up Collaborator access (see KYLE-SETUP.md for details)
+#    - Create free Partner account at partners.shopify.com
+#    - Request collaborator access to mikajaymes.myshopify.com
+#    - Wait for Michael to approve
+
+# 4. Authenticate with the store
 shopify auth login --store mikajaymes.myshopify.com
 
-# 4. Pull the current dev theme to work on
+# 5. Pull the current dev theme to work on
 shopify theme pull --development
 
-# 5. Start local dev server (creates a safe, unpublished dev theme)
+# 6. Start local dev server (creates a safe, unpublished dev theme)
 shopify theme dev --store mikajaymes.myshopify.com
 ```
 
