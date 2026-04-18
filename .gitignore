@@ -1,0 +1,28 @@
+# Shopify CLI
+.shopify/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+package-lock.json
+
+# Shopify config (contains store-specific auth)
+config/settings_data.json
+
+# Logs
+*.log
