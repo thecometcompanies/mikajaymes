@@ -1,0 +1,543 @@
+{%- liquid
+  assign tab_blocks = section.blocks | where: 'type', 'tab'
+  assign card_blocks = section.blocks | where: 'type', 'category-card'
+
+  assign default_tab_id = ''
+  for tab in tab_blocks
+    if tab.settings.default_active
+      assign default_tab_id = tab.id
+      break
+    endif
+  endfor
+  if default_tab_id == ''
+    assign first_tab = tab_blocks | first
+    if first_tab
+      assign default_tab_id = first_tab.id
+    endif
+  endif
+-%}
+
+<div class="popular-categories color-{{ section.settings.color_scheme }} gradient" id="shopify-section-{{ section.id }}">
+  <div class="container {{ section.settings.section_width }}">
+
+    {%- if section.settings.heading != blank -%}
+      <div class="popular-categories__header">
+        <{{ section.settings.heading_size }} class="popular-categories__heading">
+          {{ section.settings.heading | escape }}
+        </{{ section.settings.heading_size }}>
+      </div>
+    {%- endif -%}
+
+    {%- if tab_blocks.size > 0 -%}
+      <div class="popular-categories__tabs" role="tablist">
+        {%- for tab in tab_blocks -%}
+          {%- assign is_active = false -%}
+          {%- if tab.id == default_tab_id -%}{%- assign is_active = true -%}{%- endif -%}
+          <button
+            class="popular-categories__tab{% if is_active %} is-active{% endif %}"
+            data-tab-id="{{ tab.id }}"
+            role="tab"
+            aria-selected="{{ is_active }}"
+            type="button"
+            {{ tab.shopify_attributes }}
+          >
+            {{- tab.settings.title | escape -}}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="popular-categories__panels">
+      {%- for tab in tab_blocks -%}
+        {%- assign is_active = false -%}
+        {%- if tab.id == default_tab_id -%}{%- assign is_active = true -%}{%- endif -%}
+
+        <div
+          class="popular-categories__panel{% if is_active %} is-active{% endif %}"
+          data-panel-id="{{ tab.id }}"
+          role="tabpanel"
+          {% unless is_active %}hidden{% endunless %}
+        >
+          <div class="swiper popular-categories__swiper" data-swiper-tab="{{ tab.id }}">
+            <div class="swiper-wrapper">
+              {%- for card in card_blocks -%}
+                {%- if card.settings.parent_tab != tab.settings.title -%}{%- continue -%}{%- endif -%}
+
+                <div class="swiper-slide popular-categories__card-slide" {{ card.shopify_attributes }}>
+                  <a
+                    href="{{ card.settings.url | default: '#' }}"
+                    class="popular-categories__card color-{{ card.settings.color_scheme }} gradient"
+                    aria-label="{{ card.settings.title | escape }}"
+                  >
+                    {%- if card.settings.image != blank -%}
+                      <div class="popular-categories__card-media">
+                        {%- render 'image', image: card.settings.image, loading: 'lazy' -%}
+                      </div>
+                    {%- endif -%}
+                    <div class="popular-categories__card-content">
+                      {%- if card.settings.subtitle != blank -%}
+                        <span class="popular-categories__card-subtitle">{{- card.settings.subtitle | escape -}}</span>
+                      {%- endif -%}
+                      <h6 class="popular-categories__card-title h4">{{- card.settings.title | escape -}}</h6>
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if section.settings.show_navigation_arrows -%}
+            <div class="popular-categories__nav">
+              <button class="popular-categories__nav-prev" data-nav-tab="{{ tab.id }}" aria-label="{{ 'theme.actions.previous' | t }}" type="button">
+                {%- render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' -%}
+              </button>
+              <button class="popular-categories__nav-next" data-nav-tab="{{ tab.id }}" aria-label="{{ 'theme.actions.next' | t }}" type="button">
+                {%- render 'icon', icon_name: 'theme-chevron', class: 'icon' -%}
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --pc-card-aspect-ratio: {{ section.settings.card_aspect_ratio }};
+    --pc-slides-mobile: {{ section.settings.slides_per_view_mobile }};
+    --pc-slides-desktop: {{ section.settings.slides_per_view }};
+    padding-block: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_top }}) calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_bottom }});
+  }
+  #shopify-section-{{ section.id }} .popular-categories__header {
+    margin-block-end: 2rem;
+    text-align: center;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__heading {
+    margin: 0;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__tabs {
+    display: flex;
+    gap: 2.4rem;
+    justify-content: center;
+    margin-block-end: 2.4rem;
+    flex-wrap: wrap;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__tab {
+    background: transparent;
+    border: 0;
+    padding: 0.4rem 0;
+    font-family: inherit;
+    font-size: var(--font-size-static-md);
+    color: rgb(var(--color-foreground) / 0.5);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-medium);
+    transition: color 200ms ease, border-color 200ms ease;
+    border-block-end: 1px solid transparent;
+    line-height: 1.3;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__tab.is-active {
+    color: rgb(var(--color-foreground));
+    border-block-end-color: rgb(var(--color-foreground));
+  }
+  #shopify-section-{{ section.id }} .popular-categories__panel {
+    position: relative;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__panel[hidden] {
+    display: none;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__swiper {
+    overflow: hidden;
+    position: relative;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-slide {
+    height: auto;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--pc-card-aspect-ratio);
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--card-corner-radius, 0);
+    background-color: rgb(var(--color-background));
+    text-decoration: none;
+    color: rgb(var(--color-foreground));
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 1;
+    transition: background-color 250ms ease;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card:hover::before,
+  #shopify-section-{{ section.id }} .popular-categories__card:focus-visible::before {
+    background-color: rgba(0, 0, 0, 0.28);
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card:has(.popular-categories__card-media) .popular-categories__card-content {
+    color: #fff;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card:has(.popular-categories__card-media)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-content {
+    position: absolute;
+    inset: 0;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    text-align: start;
+    z-index: 2;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-subtitle {
+    font-size: var(--font-size-static-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-medium);
+    margin-block-end: 0.2rem;
+    opacity: 0.85;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__card-title.h4 {
+    margin: 0;
+    font-size: var(--font-size-static-md);
+    line-height: var(--line-height-static-md, 1.3);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: var(--letter-spacing-tight, 0);
+  }
+  #shopify-section-{{ section.id }} .popular-categories__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-block-start: 1.6rem;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__nav-prev,
+  #shopify-section-{{ section.id }} .popular-categories__nav-next {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgb(var(--color-foreground) / 0.2);
+    color: rgb(var(--color-foreground));
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 200ms ease;
+  }
+  #shopify-section-{{ section.id }} .popular-categories__nav-prev:hover:not([disabled]),
+  #shopify-section-{{ section.id }} .popular-categories__nav-next:hover:not([disabled]) {
+    background-color: rgb(var(--color-foreground) / 0.05);
+  }
+  #shopify-section-{{ section.id }} .popular-categories__nav-prev[disabled],
+  #shopify-section-{{ section.id }} .popular-categories__nav-next[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+{%- endstyle -%}
+
+<script>
+  (function() {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const tabs = section.querySelectorAll('.popular-categories__tab');
+    const panels = section.querySelectorAll('.popular-categories__panel');
+    const slidesDesktop = {{ section.settings.slides_per_view }};
+    const slidesMobile = {{ section.settings.slides_per_view_mobile }};
+    const swiperInstances = {};
+
+    function initSwiperFor(panel) {
+      if (typeof Swiper === 'undefined') return null;
+      const swiperEl = panel.querySelector('.swiper.popular-categories__swiper');
+      if (!swiperEl) return null;
+      const tabId = swiperEl.dataset.swiperTab;
+      if (swiperInstances[tabId]) return swiperInstances[tabId];
+
+      const prevBtn = panel.querySelector('.popular-categories__nav-prev');
+      const nextBtn = panel.querySelector('.popular-categories__nav-next');
+
+      const sw = new Swiper(swiperEl, {
+        slidesPerView: slidesMobile,
+        spaceBetween: 16,
+        watchOverflow: true,
+        breakpoints: {
+          750: {
+            slidesPerView: slidesDesktop,
+            spaceBetween: 24
+          }
+        },
+        navigation: (prevBtn && nextBtn) ? {
+          prevEl: prevBtn,
+          nextEl: nextBtn,
+          disabledClass: 'is-disabled'
+        } : false,
+        on: {
+          init: function() {
+            updateNavDisabled(this, prevBtn, nextBtn);
+          },
+          slideChange: function() {
+            updateNavDisabled(this, prevBtn, nextBtn);
+          }
+        }
+      });
+
+      swiperInstances[tabId] = sw;
+      return sw;
+    }
+
+    function updateNavDisabled(sw, prevBtn, nextBtn) {
+      if (!prevBtn || !nextBtn) return;
+      prevBtn.toggleAttribute('disabled', sw.isBeginning);
+      nextBtn.toggleAttribute('disabled', sw.isEnd);
+    }
+
+    function whenSwiperReady(cb) {
+      if (typeof Swiper !== 'undefined') return cb();
+      const interval = setInterval(() => {
+        if (typeof Swiper !== 'undefined') {
+          clearInterval(interval);
+          cb();
+        }
+      }, 50);
+      setTimeout(() => clearInterval(interval), 5000);
+    }
+
+    // Init swiper(s) for the initially-visible panel
+    whenSwiperReady(() => {
+      panels.forEach(p => {
+        if (!p.hasAttribute('hidden')) initSwiperFor(p);
+      });
+    });
+
+    // Tab switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabId = tab.dataset.tabId;
+        tabs.forEach(t => {
+          const active = t.dataset.tabId === tabId;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        panels.forEach(p => {
+          const active = p.dataset.panelId === tabId;
+          p.classList.toggle('is-active', active);
+          if (active) {
+            p.removeAttribute('hidden');
+            whenSwiperReady(() => {
+              const sw = initSwiperFor(p);
+              if (sw) sw.update();
+            });
+          } else {
+            p.setAttribute('hidden', '');
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Popular Categories",
+  "tag": "section",
+  "class": "section-popular-categories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Popular Categories"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "label": "Cards per view (desktop)",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_mobile",
+      "label": "Cards per view (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "card_aspect_ratio",
+      "label": "Card aspect ratio",
+      "options": [
+        { "value": "1/1", "label": "Square 1:1" },
+        { "value": "3/4", "label": "Portrait 3:4" },
+        { "value": "4/5", "label": "Portrait 4:5" },
+        { "value": "16/9", "label": "Wide 16:9" }
+      ],
+      "default": "3/4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section appearance"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "max-w-page", "label": "Page" },
+        { "value": "max-w-fluid", "label": "Fluid" },
+        { "value": "max-w-full", "label": "Full" }
+      ],
+      "default": "max-w-fluid"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "spacing_top",
+      "label": "Spacing top",
+      "options": [
+        { "value": "0", "label": "0" },
+        { "value": "2", "label": "2" },
+        { "value": "4", "label": "4" },
+        { "value": "6", "label": "6" },
+        { "value": "8", "label": "8" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "spacing_bottom",
+      "label": "Spacing bottom",
+      "options": [
+        { "value": "0", "label": "0" },
+        { "value": "2", "label": "2" },
+        { "value": "4", "label": "4" },
+        { "value": "6", "label": "6" },
+        { "value": "8", "label": "8" }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab title",
+          "info": "Use this exact title for the parent_tab field of category-card blocks."
+        },
+        {
+          "type": "checkbox",
+          "id": "default_active",
+          "label": "Default active",
+          "info": "Only one tab should have this checked.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "category-card",
+      "name": "Category card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "parent_tab",
+          "label": "Parent tab",
+          "info": "Type the EXACT title of the tab this card belongs under (e.g. Men, Women)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle (optional)"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Card color scheme",
+          "default": "scheme-2"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popular Categories",
+      "blocks": [
+        { "type": "tab", "settings": { "title": "Men", "default_active": true } },
+        { "type": "tab", "settings": { "title": "Women", "default_active": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

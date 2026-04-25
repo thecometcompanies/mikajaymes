@@ -20,13 +20,13 @@ npm install -g @shopify/cli @shopify/theme
 #    - Wait for Michael to approve
 
 # 4. Authenticate with the store
-shopify auth login --store mikajaymes.myshopify.com
+shopify auth login --store mika-jaymes.myshopify.com
 
 # 5. Pull the current dev theme to work on
 shopify theme pull --development
 
 # 6. Start local dev server (creates a safe, unpublished dev theme)
-shopify theme dev --store mikajaymes.myshopify.com
+shopify theme dev --store mika-jaymes.myshopify.com
 ```
 
 Your browser will open a local preview. All changes hot-reload instantly.

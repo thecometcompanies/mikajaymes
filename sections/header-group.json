@@ -1,0 +1,578 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "localization_FXcM4j": {
+          "type": "localization",
+          "disabled": true,
+          "settings": {
+            "show_on": "desktop"
+          }
+        },
+        "link_pEAxig": {
+          "type": "link",
+          "disabled": true,
+          "settings": {
+            "show_on": "desktop",
+            "link_label": "Our Stores",
+            "link": "/",
+            "icon": "store"
+          }
+        },
+        "cee0c4f6-5546-43a3-bfc3-2f3afa36d9d5": {
+          "type": "text-slide",
+          "settings": {
+            "content": "<p>hassle free</p>",
+            "icon": "theme-check-circle"
+          }
+        },
+        "5e0cad2e-d931-416e-ac29-51a4a683ade2": {
+          "type": "text-slide",
+          "settings": {
+            "content": "<p>zero worry</p>",
+            "icon": "theme-lock"
+          }
+        },
+        "link_h8t4xz": {
+          "type": "link",
+          "disabled": true,
+          "settings": {
+            "show_on": "desktop",
+            "link_label": "New Products",
+            "link": "/",
+            "icon": "theme-box"
+          }
+        },
+        "timer_UXXqcR": {
+          "type": "timer",
+          "disabled": true,
+          "settings": {
+            "show_on": "desktop",
+            "timer_year": 2025,
+            "timer_month": "09",
+            "timer_day": 23,
+            "timer_hour": 0,
+            "timer_minute": 0,
+            "timer_end_message": "Sale has ended",
+            "show_timer_days": true,
+            "show_timer_hours": true,
+            "show_timer_minutes": true,
+            "show_timer_seconds": true
+          }
+        },
+        "easy_returns_slide": {
+          "type": "text-slide",
+          "settings": {
+            "content": "<p>easy returns</p>",
+            "icon": "theme-return"
+          }
+        }
+      },
+      "block_order": [
+        "localization_FXcM4j",
+        "link_pEAxig",
+        "cee0c4f6-5546-43a3-bfc3-2f3afa36d9d5",
+        "5e0cad2e-d931-416e-ac29-51a4a683ade2",
+        "easy_returns_slide",
+        "link_h8t4xz",
+        "timer_UXXqcR"
+      ],
+      "settings": {
+        "text_block_behaviour": "slider",
+        "slider_autoplay_interval": 5,
+        "font_weight": "700",
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-6"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "menu_shop_men": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Shop Men",
+            "url": "/collections/mens-new-arrivals",
+            "parent_title": ""
+          }
+        },
+        "men_card_new_arrivals": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "New Arrivals",
+            "subtitle": "",
+            "link": "/collections/mens-new-arrivals"
+          }
+        },
+        "men_card_classics": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "image": "shopify://shop_images/Mika-Jaymes-CO39375.jpg",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Classics",
+            "subtitle": "",
+            "link": "/collections/mika-jaymes-classics"
+          }
+        },
+        "men_card_tees": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Tees",
+            "subtitle": "",
+            "link": "/collections/mens-tees"
+          }
+        },
+        "men_card_everything_melange": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Everything Melange",
+            "subtitle": "",
+            "link": "/collections/everything-melange/mens"
+          }
+        },
+        "men_card_henleys": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Henleys",
+            "subtitle": "",
+            "link": "/collections/mens-henleys"
+          }
+        },
+        "men_card_button_ups": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Button Ups",
+            "subtitle": "",
+            "link": "/collections/button-up-shirts"
+          }
+        },
+        "men_card_hoodies": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Hoodies & Sweatshirts",
+            "subtitle": "",
+            "link": "/collections/mens-hoodies-sweatshirts"
+          }
+        },
+        "men_card_joggers": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Joggers & Sweatpants",
+            "subtitle": "",
+            "link": "/collections/mens-joggers-sweatpants"
+          }
+        },
+        "men_card_jackets": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Jackets",
+            "subtitle": "",
+            "link": "/collections/jackets"
+          }
+        },
+        "men_card_sweaters": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Sweaters & Cardigans",
+            "subtitle": "",
+            "link": "/collections/mens-sweaters-and-cardigans"
+          }
+        },
+        "men_card_polos": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Polos",
+            "subtitle": "",
+            "link": "/collections/mens-polos"
+          }
+        },
+        "men_card_tanks": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Tanks",
+            "subtitle": "",
+            "link": "/collections/mens-tanks"
+          }
+        },
+        "men_card_pants": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Pants",
+            "subtitle": "",
+            "link": "/products/mens-slim-fit-twill-pant"
+          }
+        },
+        "men_card_shorts_boxers": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Shorts & Boxers",
+            "subtitle": "",
+            "link": "/collections/shorts-boxers"
+          }
+        },
+        "men_card_hats": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 1,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Hats",
+            "subtitle": "",
+            "link": "/collections/hats"
+          }
+        },
+        "men_tees_shop_all": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Shop All",
+            "url": "/collections/mens-tees",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_linen": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Linen Tees",
+            "url": "/collections/mens-linen-shirts",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_crew_neck": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Crew Neck",
+            "url": "/collections/mens-crew-neck-tees",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_v_neck": {
+          "type": "menu-link",
+          "settings": {
+            "title": "V-Neck",
+            "url": "/collections/mens-v-neck-tees",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_pocket": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Pocket",
+            "url": "/collections/mens-pocket-tees",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_long_sleeve": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Long Sleeve",
+            "url": "/collections/mens-long-sleeve-shirts",
+            "parent_title": "Tees"
+          }
+        },
+        "men_tees_wide_neck": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Wide Neck",
+            "url": "/collections/mens-wide-neck-tees",
+            "parent_title": "Tees"
+          }
+        },
+        "menu_shop_women": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Shop Women",
+            "url": "/collections/womens-new-arrivals",
+            "parent_title": ""
+          }
+        },
+        "women_card_new_arrivals": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "New Arrivals",
+            "subtitle": "",
+            "link": "/collections/womens-new-arrivals"
+          }
+        },
+        "women_card_everything_soft_knit": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Everything Soft Knit",
+            "subtitle": "",
+            "link": "/collections/everything-soft-knit"
+          }
+        },
+        "women_card_dresses": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Dresses",
+            "subtitle": "",
+            "link": "/collections/womens-dresses"
+          }
+        },
+        "women_card_tees_tanks": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Tees & Tanks",
+            "subtitle": "",
+            "link": "/collections/womens-tees-and-tanks"
+          }
+        },
+        "women_card_sweaters": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Sweaters",
+            "subtitle": "",
+            "link": "/collections/womens-sweaters"
+          }
+        },
+        "women_card_sweatshirts_hoodies": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Sweatshirts & Hoodies",
+            "subtitle": "",
+            "link": "/collections/womens-sweatshirts-hoodies"
+          }
+        },
+        "women_card_bottoms": {
+          "type": "image-link-text",
+          "settings": {
+            "show_on": "both",
+            "menu_item_position": 2,
+            "color_scheme": "",
+            "card_aspect_ratio": "same_as_section",
+            "content_position_horizontal": "align-center text-center",
+            "content_position_vertical": "justify-center",
+            "title": "Bottoms",
+            "subtitle": "",
+            "link": "/collections/bottoms"
+          }
+        },
+        "menu_classics": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Classics",
+            "url": "/collections/mika-jaymes-classics",
+            "parent_title": ""
+          }
+        },
+        "menu_our_story": {
+          "type": "menu-link",
+          "settings": {
+            "title": "Our Story",
+            "url": "/pages/about",
+            "parent_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "menu_shop_men",
+        "men_card_new_arrivals",
+        "men_card_classics",
+        "men_card_tees",
+        "men_card_everything_melange",
+        "men_card_henleys",
+        "men_card_button_ups",
+        "men_card_hoodies",
+        "men_card_joggers",
+        "men_card_jackets",
+        "men_card_sweaters",
+        "men_card_polos",
+        "men_card_tanks",
+        "men_card_pants",
+        "men_card_shorts_boxers",
+        "men_card_hats",
+        "men_tees_shop_all",
+        "men_tees_linen",
+        "men_tees_crew_neck",
+        "men_tees_v_neck",
+        "men_tees_pocket",
+        "men_tees_long_sleeve",
+        "men_tees_wide_neck",
+        "menu_shop_women",
+        "women_card_new_arrivals",
+        "women_card_everything_soft_knit",
+        "women_card_dresses",
+        "women_card_tees_tanks",
+        "women_card_sweaters",
+        "women_card_sweatshirts_hoodies",
+        "women_card_bottoms",
+        "menu_classics",
+        "menu_our_story"
+      ],
+      "settings": {
+        "layout": "",
+        "sticky": true,
+        "nav_items_border": false,
+        "drawer_layer": true,
+        "logo": "shopify://shop_images/black_logo_84857c40-8fc6-4a96-8b7c-d98245ca214a.png",
+        "logo_transparent": "shopify://shop_images/white_logo_1.png",
+        "logo_svg_code": "",
+        "logo_width": 244,
+        "logo_width_mobile": 136,
+        "logo_font_size": 1,
+        "transparent_header_bottom_border": true,
+        "country_drawer_header": true,
+        "country_drawer_navigation_menu": true,
+        "utils_link_display": "icon",
+        "first_additional_link_title": "",
+        "first_additional_link_url": "#",
+        "second_additional_link_title": "",
+        "second_additional_link_url": "",
+        "menu": "main-menu",
+        "menu_mobile": "",
+        "submenu": "",
+        "menu_mobile_card_column_count": "2",
+        "link_size": "xs",
+        "parent_link_size": "md",
+        "parent_without_submenu_size": "lg",
+        "submenu_text_transform": "uppercase",
+        "spacing_between_cards": "2",
+        "card_aspect_ratio": "4/3",
+        "card_aspect_ratio_mobile": "4/3",
+        "megamenu_dropdown_column_width": 23.4,
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-1",
+        "color_scheme_for_dropdown": "",
+        "color_scheme_for_drawer": ""
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
