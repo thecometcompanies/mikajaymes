@@ -93,7 +93,7 @@
     "map": {
       "type": "map",
       "settings": {
-        "api_key": "AIzaSyAgZ_45n_1PvfdBIpZkCO_dWDvLJOxSr8g",
+        "api_key": "",
         "address_query": "Nugle 2 broj 6 ,Bugojno, Bosnia",
         "zoom_level": 13,
         "section_width": "max-w-fluid",
