@@ -351,6 +351,10 @@
           {{- block.settings.custom_liquid -}}
         </div>
 
+      {%- when 'multipack' -%}
+        <div class="{{ product_block_class }}" {{ block.shopify_attributes }}>
+          {%- render 'main-product__multipack', block: block, product: product, section: section -%}
+        </div>
       {%- when 'variant_picker' -%}
         {%- assign product_block_class = 'product__variant-picker' | append: ' ' | append: product_block_class -%}
         <div class="{{ product_block_class }}" {{ block.shopify_attributes }}>

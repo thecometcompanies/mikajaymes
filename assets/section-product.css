@@ -2588,3 +2588,24 @@ dropdown-input:has(.is-open) .icon svg {
   inset: 0;
   z-index: 1;
 }
+
+/* Full-row variant option (e.g. Size buttons) */
+.product__variant-options.product__variant-options--full-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  gap: 0.6rem !important;
+}
+.product__variant-options.product__variant-options--full-row > legend {
+  flex-basis: 100% !important;
+  width: 100% !important;
+  order: -1;
+}
+.product__variant-options.product__variant-options--full-row > label,
+.product__variant-options.product__variant-options--full-row > .product-option__label,
+.product__variant-options.product__variant-options--full-row > .button--variant {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  text-align: center;
+  justify-content: center;
+}

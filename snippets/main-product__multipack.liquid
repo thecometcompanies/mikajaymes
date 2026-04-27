@@ -1,0 +1,198 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign base_price = current_variant.price | default: 0
+  assign currency_code = cart.currency.iso_code
+
+  assign pack_count_1 = block.settings.pack_count_1 | default: 1
+  assign pack_count_2 = block.settings.pack_count_2 | default: 2
+  assign pack_count_3 = block.settings.pack_count_3 | default: 3
+
+  assign pack_label_1 = block.settings.pack_label_1 | default: 'Single'
+  assign pack_label_2 = block.settings.pack_label_2 | default: '2-Pack'
+  assign pack_label_3 = block.settings.pack_label_3 | default: '3-Pack'
+
+  assign pack_discount_1 = block.settings.pack_discount_1 | default: 0
+  assign pack_discount_2 = block.settings.pack_discount_2 | default: 0
+  assign pack_discount_3 = block.settings.pack_discount_3 | default: 0
+
+  assign default_pack = block.settings.default_pack | default: 1
+-%}
+
+{%- capture multipack_option_1 -%}
+  {%- assign total_1 = base_price | times: pack_count_1 -%}
+  {%- if pack_discount_1 > 0 -%}
+    {%- assign discount_amt_1 = total_1 | times: pack_discount_1 | divided_by: 100 -%}
+    {%- assign final_1 = total_1 | minus: discount_amt_1 -%}
+  {%- else -%}
+    {%- assign final_1 = total_1 -%}
+  {%- endif -%}
+  <button
+    type="button"
+    class="multipack-option{% if default_pack == 1 %} is-active{% endif %}"
+    data-multipack-qty="{{ pack_count_1 }}"
+    aria-pressed="{% if default_pack == 1 %}true{% else %}false{% endif %}"
+  >
+    <span class="multipack-option__label">{{ pack_label_1 | escape }}</span>
+    {%- if pack_count_1 > 1 -%}
+      <span class="multipack-option__qty">{{ pack_count_1 }} units</span>
+    {%- endif -%}
+    <span class="multipack-option__price">{{ final_1 | money_with_currency }}</span>
+    {%- if pack_discount_1 > 0 -%}
+      <span class="multipack-option__save">Save {{ pack_discount_1 }}%</span>
+    {%- endif -%}
+  </button>
+{%- endcapture -%}
+
+{%- capture multipack_option_2 -%}
+  {%- assign total_2 = base_price | times: pack_count_2 -%}
+  {%- if pack_discount_2 > 0 -%}
+    {%- assign discount_amt_2 = total_2 | times: pack_discount_2 | divided_by: 100 -%}
+    {%- assign final_2 = total_2 | minus: discount_amt_2 -%}
+  {%- else -%}
+    {%- assign final_2 = total_2 -%}
+  {%- endif -%}
+  <button
+    type="button"
+    class="multipack-option{% if default_pack == 2 %} is-active{% endif %}"
+    data-multipack-qty="{{ pack_count_2 }}"
+    aria-pressed="{% if default_pack == 2 %}true{% else %}false{% endif %}"
+  >
+    <span class="multipack-option__label">{{ pack_label_2 | escape }}</span>
+    {%- if pack_count_2 > 1 -%}
+      <span class="multipack-option__qty">{{ pack_count_2 }} units</span>
+    {%- endif -%}
+    <span class="multipack-option__price">{{ final_2 | money_with_currency }}</span>
+    {%- if pack_discount_2 > 0 -%}
+      <span class="multipack-option__save">Save {{ pack_discount_2 }}%</span>
+    {%- endif -%}
+  </button>
+{%- endcapture -%}
+
+{%- capture multipack_option_3 -%}
+  {%- assign total_3 = base_price | times: pack_count_3 -%}
+  {%- if pack_discount_3 > 0 -%}
+    {%- assign discount_amt_3 = total_3 | times: pack_discount_3 | divided_by: 100 -%}
+    {%- assign final_3 = total_3 | minus: discount_amt_3 -%}
+  {%- else -%}
+    {%- assign final_3 = total_3 -%}
+  {%- endif -%}
+  <button
+    type="button"
+    class="multipack-option{% if default_pack == 3 %} is-active{% endif %}"
+    data-multipack-qty="{{ pack_count_3 }}"
+    aria-pressed="{% if default_pack == 3 %}true{% else %}false{% endif %}"
+  >
+    <span class="multipack-option__label">{{ pack_label_3 | escape }}</span>
+    {%- if pack_count_3 > 1 -%}
+      <span class="multipack-option__qty">{{ pack_count_3 }} units</span>
+    {%- endif -%}
+    <span class="multipack-option__price">{{ final_3 | money_with_currency }}</span>
+    {%- if pack_discount_3 > 0 -%}
+      <span class="multipack-option__save">Save {{ pack_discount_3 }}%</span>
+    {%- endif -%}
+  </button>
+{%- endcapture -%}
+
+<product-multipack class="multipack" data-section-id="{{ section.id }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}
+    <p class="multipack__heading">{{- block.settings.heading | escape -}}</p>
+  {%- endif -%}
+  <div class="multipack__options">
+    {{ multipack_option_1 }}
+    {{ multipack_option_2 }}
+    {{ multipack_option_3 }}
+  </div>
+</product-multipack>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .multipack {
+    display: block;
+    margin-block-end: var(--product-block-spacing-unit, 1.6rem);
+  }
+  #shopify-section-{{ section.id }} .multipack__heading {
+    font-size: var(--font-size-static-sm);
+    font-weight: var(--font-weight-heading-semibold);
+    margin: 0 0 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-medium);
+  }
+  #shopify-section-{{ section.id }} .multipack__options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+  #shopify-section-{{ section.id }} .multipack-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 1.2rem 0.8rem;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+    border-radius: 0;
+    cursor: pointer;
+    transition: border-color 200ms ease, background-color 200ms ease;
+    text-align: center;
+    font-family: inherit;
+  }
+  #shopify-section-{{ section.id }} .multipack-option:hover {
+    border-color: rgb(var(--color-foreground));
+  }
+  #shopify-section-{{ section.id }} .multipack-option.is-active {
+    border-color: rgb(var(--color-foreground));
+    background: rgba(var(--color-foreground), 0.05);
+  }
+  #shopify-section-{{ section.id }} .multipack-option__label {
+    font-size: var(--font-size-static-sm);
+    font-weight: var(--font-weight-heading-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-medium);
+    line-height: 1.2;
+  }
+  #shopify-section-{{ section.id }} .multipack-option__qty {
+    font-size: var(--font-size-static-xs);
+    color: rgba(var(--color-foreground), 0.65);
+    line-height: 1.2;
+  }
+  #shopify-section-{{ section.id }} .multipack-option__price {
+    font-size: var(--font-size-static-sm);
+    font-weight: var(--font-weight-heading-semibold);
+    margin-block-start: 0.4rem;
+  }
+  #shopify-section-{{ section.id }} .multipack-option__save {
+    font-size: var(--font-size-static-xs);
+    color: rgba(var(--color-foreground), 0.7);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-medium);
+  }
+{%- endstyle -%}
+
+<script>
+  (function() {
+    if (customElements.get('product-multipack')) return;
+    class ProductMultipack extends HTMLElement {
+      connectedCallback() {
+        this.options = Array.from(this.querySelectorAll('.multipack-option'));
+        this.sectionId = this.dataset.sectionId;
+        this.options.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            this.options.forEach((b) => {
+              const on = b === btn;
+              b.classList.toggle('is-active', on);
+              b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            const qty = parseInt(btn.dataset.multipackQty, 10) || 1;
+            const qtyInput = document.querySelector('product-info[data-section="' + this.sectionId + '"] input[name="quantity"]');
+            if (qtyInput) {
+              qtyInput.value = qty;
+              qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        });
+      }
+    }
+    customElements.define('product-multipack', ProductMultipack);
+  })();
+</script>

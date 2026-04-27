@@ -85,12 +85,26 @@
           {% if block_breadcrumbs %}
             {%- liquid
               assign breadcrumbs_class = 'product__breadcrumbs' | append: ' show-on--' | append: block_breadcrumbs.settings.show_on | append: ' bg-transparent'
+              assign product_collection = nil
+              assign product_collection_multiple = false
               if block_breadcrumbs.settings.collections != blank
                 assign product_collection = block_breadcrumbs.settings.collections
                 assign product_collection_multiple = true
-              else
-                assign product_collection = product.collections.first | default: collections.all
-                assign product_collection_multiple = false
+              elsif collection == blank
+                assign chosen_collection = nil
+                for col in product.collections
+                  assign first_char = col.title | strip | slice: 0, 1
+                  case first_char
+                    when '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+                      continue
+                    else
+                      assign chosen_collection = col
+                  endcase
+                  if chosen_collection
+                    break
+                  endif
+                endfor
+                assign product_collection = chosen_collection | default: product.collections.first | default: collections.all
               endif
               render 'breadcrumbs', alignment: 'start', class: breadcrumbs_class, product_collection: product_collection, product_collection_multiple: product_collection_multiple
             -%}
@@ -98,18 +112,26 @@
         </div>
       {% endif %}
 
-      <div class="product-grid product-grid__size--{{ section.settings.media_grid_size }}{% unless product_has_media %} product-grid__has-no-media{% endunless %}">
+      {%- assign is_stack_layout = false -%}
+      {%- if section.settings.product_media_layout == 'product__media-layout--stack' -%}
+        {%- assign is_stack_layout = true -%}
+      {%- endif -%}
+      <div class="product-grid product-grid__size--{{ section.settings.media_grid_size }}{% if is_stack_layout %} product-grid__layout--stack{% endif %}{% unless product_has_media %} product-grid__has-no-media{% endunless %}">
         {% if product_has_media %}
           {% comment %} PRODUCT MEDIA GALLERY {% endcomment %}
           <div class="product-grid__item product-grid__item--media product-grid__item-media--{{ section.settings.media_grid_position }}">
-            <div class="product-grid__item--media-wrapper{% if section.settings.enable_sticky_info %} product-grid__sticky{% endif %}">
-              {%- render 'main-product__media-gallery', section: section, product_has_single_media: product_has_single_media, topbar_mobile: block_goback.settings.display_goback_mobile -%}
+            <div class="product-grid__item--media-wrapper{% if section.settings.enable_sticky_info and is_stack_layout == false %} product-grid__sticky{% endif %}">
+              {%- if is_stack_layout -%}
+                {%- render 'main-product__media-stack', section: section -%}
+              {%- else -%}
+                {%- render 'main-product__media-gallery', section: section, product_has_single_media: product_has_single_media, topbar_mobile: block_goback.settings.display_goback_mobile -%}
+              {%- endif -%}
             </div>
           </div>
         {% endif %}
         {% comment %} PRODUCT INFO & DETAILS {% endcomment %}
         <div class="product-grid__item product-grid__item--content">
-            <div class="product-grid__item--content-wrapper{% if section.settings.enable_sticky_info %} product-grid__sticky{% endif %}">
+            <div class="product-grid__item--content-wrapper{% if section.settings.enable_sticky_info or is_stack_layout %} product-grid__sticky{% endif %}">
               {%- render 'main-product__info-blocks', section: section, is_gift_card: is_gift_card -%}
             </div>
         </div>
@@ -669,6 +691,128 @@
           "type": "text",
           "id": "show_price_custom_info",
           "label": "Show additional information"
+        }
+      ]
+    },
+    {
+      "type": "multipack",
+      "name": "Multipack",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Display 1 / 2 / 3-pack options below the price. Note: the discount % shown is cosmetic only — set up matching automatic discounts in Shopify admin → Discounts so the savings actually apply at checkout."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Choose your pack"
+        },
+        {
+          "type": "header",
+          "content": "Option 1"
+        },
+        {
+          "type": "text",
+          "id": "pack_label_1",
+          "label": "Label",
+          "default": "Single"
+        },
+        {
+          "type": "range",
+          "id": "pack_count_1",
+          "label": "Quantity per pack",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "pack_discount_1",
+          "label": "Discount %",
+          "info": "0 = no discount badge shown",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Option 2"
+        },
+        {
+          "type": "text",
+          "id": "pack_label_2",
+          "label": "Label",
+          "default": "2-Pack"
+        },
+        {
+          "type": "range",
+          "id": "pack_count_2",
+          "label": "Quantity per pack",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "range",
+          "id": "pack_discount_2",
+          "label": "Discount %",
+          "info": "0 = no discount badge shown",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "default": 5
+        },
+        {
+          "type": "header",
+          "content": "Option 3"
+        },
+        {
+          "type": "text",
+          "id": "pack_label_3",
+          "label": "Label",
+          "default": "3-Pack"
+        },
+        {
+          "type": "range",
+          "id": "pack_count_3",
+          "label": "Quantity per pack",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "pack_discount_3",
+          "label": "Discount %",
+          "info": "0 = no discount badge shown",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "unit": "%",
+          "default": 10
+        },
+        {
+          "type": "header",
+          "content": "Default"
+        },
+        {
+          "type": "select",
+          "id": "default_pack",
+          "label": "Default selected pack",
+          "options": [
+            { "value": "1", "label": "Option 1" },
+            { "value": "2", "label": "Option 2" },
+            { "value": "3", "label": "Option 3" }
+          ],
+          "default": "1"
         }
       ]
     },
@@ -1826,6 +1970,10 @@
         {
           "value": "product__media-layout--partial",
           "label": "t:sections.main-product.settings.product_media_layout.options.partial.label"
+        },
+        {
+          "value": "product__media-layout--stack",
+          "label": "Color-filtered stack"
         }
       ],
       "default": "product__media-layout--full"

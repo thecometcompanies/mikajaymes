@@ -12,6 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "breadcrumbs_main": {
+          "type": "breadcrumbs",
+          "settings": {
+            "show_on": "both"
+          }
+        },
         "badge_Hkd38r": {
           "type": "badge",
           "settings": {
@@ -25,6 +31,22 @@
           "type": "title",
           "settings": {
             "spacing_bottom": "1"
+          }
+        },
+        "multipack_main": {
+          "type": "multipack",
+          "settings": {
+            "heading": "Choose your pack",
+            "pack_label_1": "Single",
+            "pack_count_1": 1,
+            "pack_discount_1": 0,
+            "pack_label_2": "2-Pack",
+            "pack_count_2": 2,
+            "pack_discount_2": 5,
+            "pack_label_3": "3-Pack",
+            "pack_count_3": 3,
+            "pack_discount_3": 10,
+            "default_pack": "1"
           }
         },
         "8effeb43-55b7-4ec4-ab9b-68bcd89b865b": {
@@ -157,10 +179,11 @@
         }
       },
       "block_order": [
+        "breadcrumbs_main",
         "badge_Hkd38r",
         "1e0c79e9-7de0-4eee-b9c5-f27132635fb8",
         "8effeb43-55b7-4ec4-ab9b-68bcd89b865b",
-        "description_qA3HqH",
+        "multipack_main",
         "1e939cd6-0958-4135-a9e5-c50faef01437",
         "1e939cd6-0955-4135-a9e5-c50faef01437",
         "8604a6ff-ad0b-44dd-8068-1de4e062f8e8",
@@ -175,7 +198,7 @@
         "complementary_products_tKerNK"
       ],
       "settings": {
-        "product_media_layout": "product__media-layout--grid",
+        "product_media_layout": "product__media-layout--stack",
         "product_media_layout_mobile": "product__media-layout--partial--sm",
         "product_media_aspect_ratio": "fit",
         "product_media_object_fit": "cover",

@@ -75,8 +75,19 @@
         {%- endif -%}
       {% endcapture %}
 
+      {%- liquid
+        assign is_color_option = false
+        assign swatch_option_names = settings.swatches_option | split: ','
+        for swatch_name in swatch_option_names
+          assign swatch_name_clean = swatch_name | strip
+          if swatch_name_clean == option.name
+            assign is_color_option = true
+            break
+          endif
+        endfor
+      -%}
       {%- if picker_type == 'swatch' or picker_type == 'button' -%}
-        <fieldset class="js product__variant-options product-form__input product-form__input--button">
+        <fieldset class="js product__variant-options product-form__input product-form__input--button{% if picker_type == 'button' and is_color_option == false %} product__variant-options--full-row{% endif %}">
           <legend class="form__label">
             {{ option.name }}
             <span data-selected-value>

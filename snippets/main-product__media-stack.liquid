@@ -1,0 +1,402 @@
+{%- liquid
+  assign all_media = product.media | sort: 'position'
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign color_option_name = settings.swatches_option | default: 'Color'
+  assign color_option_position = 0
+
+  for option in product.options_with_values
+    if option.name == color_option_name
+      assign color_option_position = forloop.index
+      break
+    endif
+  endfor
+
+  assign current_color = blank
+  if color_option_position == 1
+    assign current_color = current_variant.option1
+  elsif color_option_position == 2
+    assign current_color = current_variant.option2
+  elsif color_option_position == 3
+    assign current_color = current_variant.option3
+  endif
+
+  assign current_color_handle = current_color | handleize
+
+  assign matched_media_count = 0
+  if current_color != blank
+    for media in all_media
+      assign media_alt_handle = media.alt | default: '' | handleize
+      if media_alt_handle contains current_color_handle
+        assign matched_media_count = matched_media_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+<product-media-stack class="product-media-stack" data-active-color="{{ current_color | escape }}">
+  {%- if all_media.size > 0 -%}
+    <div class="product-media-stack__thumbs" role="tablist" aria-label="Product images">
+      {%- assign thumb_first_visible = true -%}
+      {%- for media in all_media -%}
+        {%- assign media_alt_handle = media.alt | default: '' | handleize -%}
+        {%- assign show_media = true -%}
+        {%- if matched_media_count > 0 and current_color != blank -%}
+          {%- unless media_alt_handle contains current_color_handle -%}
+            {%- assign show_media = false -%}
+          {%- endunless -%}
+        {%- endif -%}
+        {%- if show_media -%}
+          <button
+            type="button"
+            class="product-media-stack__thumb{% if thumb_first_visible %} is-active{% endif %}"
+            role="tab"
+            data-thumb-target="hero-{{ section.id }}-{{ media.id }}"
+            data-media-alt="{{ media.alt | default: '' | escape }}"
+            aria-selected="{% if thumb_first_visible %}true{% else %}false{% endif %}"
+          >
+            {%- if media.preview_image -%}
+              {% render 'image', image: media.preview_image, loading: 'lazy', image_url_width: 200 %}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </button>
+          {%- assign thumb_first_visible = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="product-media-stack__column">
+      {%- assign hero_first_visible = true -%}
+      {%- for media in all_media -%}
+        {%- assign media_alt_handle = media.alt | default: '' | handleize -%}
+        {%- assign show_media = true -%}
+        {%- if matched_media_count > 0 and current_color != blank -%}
+          {%- unless media_alt_handle contains current_color_handle -%}
+            {%- assign show_media = false -%}
+          {%- endunless -%}
+        {%- endif -%}
+        {%- if show_media -%}
+          <figure
+            id="hero-{{ section.id }}-{{ media.id }}"
+            class="product-media-stack__hero{% if hero_first_visible %} is-active{% endif %}"
+            data-hero-id="{{ media.id }}"
+          >
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {% render 'image', image: media, loading: 'lazy', image_url_width: 1400 %}
+              {%- when 'video' -%}
+                {{ media | video_tag: image_size: '1400x', loop: true, autoplay: true, muted: true, controls: false }}
+              {%- when 'external_video' -%}
+                {% render 'external-video', video: media, title: product.title, controls: false %}
+              {%- when 'model' -%}
+                {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true }}
+              {%- else -%}
+                {% render 'image', image: media, loading: 'lazy', image_url_width: 1400 %}
+            {%- endcase -%}
+          </figure>
+          {%- assign hero_first_visible = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="product-media-stack__column">
+      <figure class="product-media-stack__hero">
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </figure>
+    </div>
+  {%- endif -%}
+</product-media-stack>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--media,
+  #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--content {
+    grid-column: auto;
+  }
+  @media screen and (min-width: 990px) {
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 4rem;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--media {
+      grid-column: 1 / 2 !important;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--content {
+      grid-column: 2 / 3 !important;
+      align-self: stretch;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--content > .product-grid__item--content-wrapper {
+      position: sticky;
+      top: 9rem;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .product-media-stack {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1.6rem;
+    align-items: start;
+  }
+  @media screen and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .product-media-stack {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 1rem;
+      width: 100%;
+    }
+    #shopify-section-{{ section.id }} .product-media-stack__column {
+      order: 1;
+      padding-inline: var(--page-gutter, 1.6rem);
+      box-sizing: border-box;
+      width: 100%;
+    }
+    #shopify-section-{{ section.id }} .product-media-stack__thumbs {
+      order: 2;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--content > .product-grid__item--content-wrapper {
+      position: static !important;
+      max-width: 100%;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack > .product-grid__item--content {
+      max-width: 100%;
+      overflow: hidden;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack .product__variant-options {
+      flex-wrap: nowrap !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-inline: calc(50% - 50vw) !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 var(--page-gutter, 1.6rem) 0.4rem;
+      box-sizing: border-box;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack .product__variant-options::-webkit-scrollbar {
+      display: none;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack .product__variant-options > legend {
+      flex-basis: 100% !important;
+      order: -1;
+    }
+    #shopify-section-{{ section.id }} .product-grid.product-grid__layout--stack .product__variant-options > .button--variant {
+      flex: 0 0 auto;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .product-media-stack__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: sticky;
+    top: 9rem;
+    max-height: calc(100vh - 11rem);
+    overflow-y: auto;
+    padding: 0.2rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__thumbs::-webkit-scrollbar {
+    display: none;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__thumb {
+    border: 0.1rem solid transparent;
+    background: rgb(var(--color-placeholder));
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 10rem;
+    min-height: 10rem;
+    aspect-ratio: auto;
+    overflow: hidden;
+    transition: border-color 200ms ease, opacity 200ms ease;
+    opacity: 0.55;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__thumb:hover {
+    opacity: 1;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__thumb.is-active {
+    border-color: rgb(var(--color-foreground));
+    opacity: 1;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media screen and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .product-media-stack__thumbs {
+      flex-direction: row !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-inline: calc(50% - 50vw) !important;
+      max-height: none !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      position: static;
+      gap: 0.6rem;
+      padding: 0.4rem var(--page-gutter, 1.6rem);
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+    }
+    #shopify-section-{{ section.id }} .product-media-stack__thumb {
+      width: 6rem !important;
+      min-width: 6rem !important;
+      max-width: 6rem !important;
+      height: 8rem !important;
+      min-height: 8rem !important;
+      flex: 0 0 6rem !important;
+      scroll-snap-align: start;
+    }
+    #shopify-section-{{ section.id }} .product-media-stack__hero {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .product-media-stack__hero.is-active {
+      display: block !important;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .product-media-stack__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__hero {
+    margin: 0;
+    width: 100%;
+    background: rgb(var(--color-placeholder));
+    overflow: hidden;
+    scroll-margin-top: 9rem;
+  }
+  #shopify-section-{{ section.id }} .product-media-stack__hero img,
+  #shopify-section-{{ section.id }} .product-media-stack__hero video,
+  #shopify-section-{{ section.id }} .product-media-stack__hero iframe {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+{%- endstyle -%}
+
+<script>
+  (function() {
+    if (customElements.get('product-media-stack')) return;
+    class ProductMediaStack extends HTMLElement {
+      connectedCallback() {
+        this.thumbs = Array.from(this.querySelectorAll('.product-media-stack__thumb'));
+        this.heroes = Array.from(this.querySelectorAll('.product-media-stack__hero'));
+        this.thumbsRail = this.querySelector('.product-media-stack__thumbs');
+
+        this.isMobile = () => window.matchMedia('(max-width: 989px)').matches;
+
+        this.thumbs.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = btn.dataset.thumbTarget;
+            if (this.isMobile()) {
+              this.setActive(id, false);
+            } else {
+              const target = document.getElementById(id);
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              this.setActive(id, true);
+            }
+          });
+        });
+
+        if ('IntersectionObserver' in window && this.heroes.length) {
+          const observer = new IntersectionObserver((entries) => {
+            if (this.isMobile()) return;
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+            if (visible.length) {
+              this.setActive(visible[0].target.id, true);
+            }
+          }, {
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: [0, 0.25, 0.5, 0.75, 1],
+          });
+          this.heroes.forEach((hero) => observer.observe(hero));
+        }
+
+        if (this.thumbsRail) {
+          const updateFromRail = () => {
+            const railRect = this.thumbsRail.getBoundingClientRect();
+            const railCenterX = railRect.left + railRect.width / 2;
+            let nearest = null;
+            let nearestDist = Infinity;
+            this.thumbs.forEach((t) => {
+              const r = t.getBoundingClientRect();
+              const c = r.left + r.width / 2;
+              const d = Math.abs(c - railCenterX);
+              if (d < nearestDist) { nearestDist = d; nearest = t; }
+            });
+            if (nearest && !nearest.classList.contains('is-active')) {
+              this.setActive(nearest.dataset.thumbTarget, false);
+            }
+          };
+          let rafId = null;
+          const onScroll = () => {
+            if (!this.isMobile()) return;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(updateFromRail);
+          };
+          this.thumbsRail.addEventListener('scroll', onScroll, { passive: true });
+          this.thumbsRail.addEventListener('scrollend', onScroll, { passive: true });
+        }
+
+        const heroWrap = this.querySelector('.product-media-stack__column');
+        if (heroWrap) {
+          let touchStartX = null;
+          let touchStartY = null;
+          heroWrap.addEventListener('touchstart', (e) => {
+            if (!this.isMobile()) return;
+            const t = e.touches[0];
+            touchStartX = t.clientX;
+            touchStartY = t.clientY;
+          }, { passive: true });
+          heroWrap.addEventListener('touchend', (e) => {
+            if (!this.isMobile() || touchStartX === null) return;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - touchStartX;
+            const dy = t.clientY - touchStartY;
+            touchStartX = touchStartY = null;
+            if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+            const activeIdx = this.thumbs.findIndex((b) => b.classList.contains('is-active'));
+            if (activeIdx === -1) return;
+            const nextIdx = dx < 0 ? activeIdx + 1 : activeIdx - 1;
+            const nextThumb = this.thumbs[nextIdx];
+            if (nextThumb) {
+              this.setActive(nextThumb.dataset.thumbTarget, true);
+            }
+          }, { passive: true });
+        }
+      }
+      setActive(id, scrollThumb) {
+        this.thumbs.forEach((b) => {
+          const on = b.dataset.thumbTarget === id;
+          b.classList.toggle('is-active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+          if (on && scrollThumb) {
+            b.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+          }
+        });
+        this.heroes.forEach((h) => {
+          h.classList.toggle('is-active', h.id === id);
+        });
+      }
+    }
+    customElements.define('product-media-stack', ProductMediaStack);
+  })();
+</script>
